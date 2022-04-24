@@ -1,8 +1,9 @@
 const router = require('express').Router();
 require('dotenv').config();
 const { Person, Address } = require('../../models');
+const { isLoggedIn, hasProfile } = require('../../utils/auth');
 
-router.get('/', async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
   try {
     const { rows } = await Person.getAll();
 
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', hasProfile, async (req, res) => {
   try {
     const newPersonEntry = {
       first_name: req.body.first_name,
