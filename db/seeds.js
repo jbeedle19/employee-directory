@@ -12,6 +12,7 @@ const seeds = async (data) => {
     personalData.last_name = data[i].last_name;
     personalData.phone = data[i].phone;
     personalData.github_id = data[i].github_id;
+    personalData.avatar = data[i].avatar;
     
     // Address data 
     addressData.street = data[i].street;
