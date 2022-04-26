@@ -18,6 +18,12 @@ router.get('/', isLoggedIn, async (req, res) => {
 
 router.post('/', hasProfile, async (req, res) => {
   upload(req, res, async (err) => {
+    if (err instanceof multer.MulterError) {
+      return res.json({ error: 'File too large! Must be under 1MB' });
+    } else if (err) {
+      return res.json({ error: err.message });
+    }
+
     const imgPath = req.file.path.replace('public', '');
 
     const newPersonEntry = {

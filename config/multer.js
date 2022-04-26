@@ -12,9 +12,20 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({
-    storage: storage
+const filter = (req, file, cb) => {
+    const types = ['image/png', 'image/jpg', 'image/jpeg', 'image.gif'];
 
+    if (types.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Only .png, .jpg, .jpeg, and .gif allowed'), false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 100000 },
+    fileFilter: filter
 }).single('avatar');
 
 module.exports = { upload };
