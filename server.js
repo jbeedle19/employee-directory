@@ -6,6 +6,8 @@ const serverSession = require('./config/session');
 const passport = require('passport');
 require('./config/passport');
 
+const hotlink = require('./utils/hotlink');
+
 const routes = require('./controllers');
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -17,6 +19,8 @@ app.use(serverSession);
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(hotlink);
 
 app.use(express.static(path.join(__dirname, '/public')));
 
