@@ -6,6 +6,9 @@ const serverSession = require('./config/session');
 const passport = require('passport');
 require('./config/passport');
 
+const helmet = require('helmet');
+const ContentSecurityPolicy = require('./config/helmet');
+
 const hotlink = require('./utils/hotlink');
 
 const routes = require('./controllers');
@@ -14,6 +17,20 @@ const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Enable Content Security Policy
+app.use(ContentSecurityPolicy);
+
+// Remove Referrer-Policy and X-Content-Type-Option headers
+app.use(
+  helmet.referrerPolicy({
+    policy: 'no-referrer',
+  })
+);
+app.use(helmet.noSniff());
+
+// Enable this if you run behind a proxy (e.g. nginx)
+// app.set('trust proxy', 1);
 
 app.use(serverSession);
 
